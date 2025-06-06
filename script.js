@@ -15,6 +15,39 @@ const UNITS = 'metric'; // Use metric units (Celsius)
 document.getElementById("darkModeToggle").addEventListener("click", () => {
   document.body.classList.toggle("dark-mode");
 });
+// Replace this with your actual fetchWeatherByCoords function or similar
+function fetchWeatherByCoords(lat, lon) {
+  const apiKey = "YOUR_API_KEY"; // Replace with your OpenWeatherMap API key
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+
+  fetch(url)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById("city").textContent = data.name;
+      document.getElementById("temp").textContent = `${data.main.temp} °C`;
+      document.getElementById("desc").textContent = data.weather[0].description;
+    })
+    .catch(err => {
+      alert("Unable to fetch weather data.");
+    });
+}
+
+// Automatically get location and fetch weather
+window.onload = () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const { latitude, longitude } = position.coords;
+        fetchWeatherByCoords(latitude, longitude);
+      },
+      error => {
+        alert("Location access denied. Please search manually.");
+      }
+    );
+  } else {
+    alert("Geolocation is not supported by your browser.");
+  }
+};
 
 // DOM Elements
 const elements = {
