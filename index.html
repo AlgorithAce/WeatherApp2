@@ -55,6 +55,11 @@
                     </div>
                 </div>
             </section>
+        <input type="text" id="cityInput" placeholder="Enter city name">
+<button onclick="showWeatherForCity(document.getElementById('cityInput').value)">Check Weather</button>
+<div id="weather-box"></div>
+<p>Temperature: <span id="temp">28</span><span id="unit">°C</span></p>
+<button onclick="toggleTemperatureUnit()">Toggle °C/°F</button>
 
 <button id="darkModeToggle">Toggle Dark Mode</button>
 

@@ -1349,6 +1349,48 @@ function loadPlaceholderData() {
     document.body.appendChild(notice);
 }
 
+function showWeatherForCity(city) {
+  const fakeData = {
+    delhi: { temp: 34, desc: "Sunny", humidity: 20 },
+    mumbai: { temp: 30, desc: "Rainy", humidity: 80 },
+    london: { temp: 18, desc: "Cloudy", humidity: 70 }
+  };
+
+  const data = fakeData[city.toLowerCase()];
+  const weatherBox = document.getElementById("weather-box");
+
+  if (data) {
+    weatherBox.innerHTML = `
+      <h3>Weather in ${city}</h3>
+      <p>Temperature: ${data.temp}°C</p>
+      <p>Condition: ${data.desc}</p>
+      <p>Humidity: ${data.humidity}%</p>
+    `;
+  } else {
+    weatherBox.innerHTML = "City not found. Try Delhi, Mumbai, or London.";
+  }
+}
+let currentUnit = "C";
+
+function toggleTemperatureUnit() {
+  const tempElem = document.getElementById("temp");
+  let tempValue = parseFloat(tempElem.innerText);
+  
+  if (currentUnit === "C") {
+    tempValue = (tempValue * 9/5) + 32;
+    tempElem.innerText = tempValue.toFixed(1);
+    document.getElementById("unit").innerText = "°F";
+    currentUnit = "F";
+  } else {
+    tempValue = (tempValue - 32) * 5/9;
+    tempElem.innerText = tempValue.toFixed(1);
+    document.getElementById("unit").innerText = "°C";
+    currentUnit = "C";
+  }
+}
+
+
+
 // Check API key on startup
 document.addEventListener('DOMContentLoaded', () => {
     if (!checkApiKey()) {
