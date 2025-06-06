@@ -1334,6 +1334,25 @@ function showWeatherForCity(city) {
     weatherBox.innerHTML = "City not found. Try Delhi, Mumbai, or London.";
   }
 }
+let currentUnit = "C";
+
+function toggleTemperatureUnit() {
+  const tempElem = document.getElementById("temp");
+  let tempValue = parseFloat(tempElem.innerText);
+  
+  if (currentUnit === "C") {
+    tempValue = (tempValue * 9/5) + 32;
+    tempElem.innerText = tempValue.toFixed(1);
+    document.getElementById("unit").innerText = "°F";
+    currentUnit = "F";
+  } else {
+    tempValue = (tempValue - 32) * 5/9;
+    tempElem.innerText = tempValue.toFixed(1);
+    document.getElementById("unit").innerText = "°C";
+    currentUnit = "C";
+  }
+}
+
 
 
 // Check API key on startup
