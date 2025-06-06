@@ -1313,6 +1313,29 @@ function loadPlaceholderData() {
     document.body.appendChild(notice);
 }
 
+function showWeatherForCity(city) {
+  const fakeData = {
+    delhi: { temp: 34, desc: "Sunny", humidity: 20 },
+    mumbai: { temp: 30, desc: "Rainy", humidity: 80 },
+    london: { temp: 18, desc: "Cloudy", humidity: 70 }
+  };
+
+  const data = fakeData[city.toLowerCase()];
+  const weatherBox = document.getElementById("weather-box");
+
+  if (data) {
+    weatherBox.innerHTML = `
+      <h3>Weather in ${city}</h3>
+      <p>Temperature: ${data.temp}°C</p>
+      <p>Condition: ${data.desc}</p>
+      <p>Humidity: ${data.humidity}%</p>
+    `;
+  } else {
+    weatherBox.innerHTML = "City not found. Try Delhi, Mumbai, or London.";
+  }
+}
+
+
 // Check API key on startup
 document.addEventListener('DOMContentLoaded', () => {
     if (!checkApiKey()) {
