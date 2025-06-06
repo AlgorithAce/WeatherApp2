@@ -12,6 +12,9 @@ const WAQI_API_URL = 'https://api.waqi.info/feed';
 
 const DEFAULT_CITY = 'London';
 const UNITS = 'metric'; // Use metric units (Celsius)
+document.getElementById("darkModeToggle").addEventListener("click", () => {
+  document.body.classList.toggle("dark-mode");
+});
 
 // DOM Elements
 const elements = {
