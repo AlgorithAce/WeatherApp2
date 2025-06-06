@@ -1323,3 +1323,63 @@ document.addEventListener('DOMContentLoaded', () => {
         initApp();
     }
 });
+
+// --- Weather Tips ---
+const tips = [
+    "Carry an umbrella on cloudy days.",
+    "Apply sunscreen if UV is high.",
+    "Stay hydrated during hot weather.",
+    "Wear layers on windy days.",
+    "Check air quality before outdoor runs."
+];
+
+const tipsList = document.getElementById("weatherTips");
+tips.forEach(tip => {
+    const li = document.createElement("li");
+    li.textContent = tip;
+    tipsList.appendChild(li);
+});
+
+// --- Favorite Locations ---
+const favoritesContainer = document.getElementById("favoritesContainer");
+const addFavoriteBtn = document.getElementById("addFavoriteBtn");
+
+addFavoriteBtn.addEventListener("click", () => {
+    const location = document.getElementById("locationName").textContent;
+    if (location && location !== "Loading...") {
+        const favItem = document.createElement("div");
+        favItem.className = "fav-item";
+        favItem.textContent = location;
+        favItem.addEventListener("click", () => {
+            document.getElementById("locationSearch").value = location;
+            document.getElementById("searchBtn").click();
+        });
+        favoritesContainer.appendChild(favItem);
+    }
+});
+
+// --- Unit Toggle ---
+const unitToggle = document.getElementById("unitToggle");
+const unitLabel = document.getElementById("unitLabel");
+
+let usingCelsius = true;
+
+unitToggle.addEventListener("change", () => {
+    usingCelsius = !usingCelsius;
+    unitLabel.textContent = usingCelsius ? "°C" : "°F";
+    // Optional: Convert displayed temps
+    convertTemperatures(usingCelsius);
+});
+
+function convertTemperatures(toCelsius) {
+    const tempElements = document.querySelectorAll(".temp-main span, .feels-like span, .high-low span, .day-high, .day-low");
+    tempElements.forEach(el => {
+        let temp = parseFloat(el.textContent);
+        if (!isNaN(temp)) {
+            temp = toCelsius
+                ? ((temp - 32) * 5) / 9
+                : (temp * 9) / 5 + 32;
+            el.textContent = Math.round(temp);
+        }
+    });
+}
