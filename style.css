@@ -101,7 +101,26 @@
     --shadow-sm: var(--shadow-sm-dark);
     --shadow-md: var(--shadow-md-dark);
     --shadow-lg: var(--shadow-lg-dark);
-    
+
+body {
+  background-color: white;
+  color: black;
+  transition: all 0.3s ease;
+}
+
+body.dark-mode {
+  background-color: #121212;
+  color: #f0f0f0;
+}
+
+button {
+  margin: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+
     /* Weather Background Variables */
     --bg-clear-day-start: var(--bg-clear-day-start-dark);
     --bg-clear-day-end: var(--bg-clear-day-end-dark);
