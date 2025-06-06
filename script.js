@@ -12,6 +12,42 @@ const WAQI_API_URL = 'https://api.waqi.info/feed';
 
 const DEFAULT_CITY = 'London';
 const UNITS = 'metric'; // Use metric units (Celsius)
+document.getElementById("darkModeToggle").addEventListener("click", () => {
+  document.body.classList.toggle("dark-mode");
+});
+// Replace this with your actual fetchWeatherByCoords function or similar
+function fetchWeatherByCoords(lat, lon) {
+  const apiKey = "YOUR_API_KEY"; // Replace with your OpenWeatherMap API key
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+
+  fetch(url)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById("city").textContent = data.name;
+      document.getElementById("temp").textContent = `${data.main.temp} °C`;
+      document.getElementById("desc").textContent = data.weather[0].description;
+    })
+    .catch(err => {
+      alert("Unable to fetch weather data.");
+    });
+}
+
+// Automatically get location and fetch weather
+window.onload = () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const { latitude, longitude } = position.coords;
+        fetchWeatherByCoords(latitude, longitude);
+      },
+      error => {
+        alert("Location access denied. Please search manually.");
+      }
+    );
+  } else {
+    alert("Geolocation is not supported by your browser.");
+  }
+};
 
 // DOM Elements
 const elements = {
@@ -1323,6 +1359,7 @@ document.addEventListener('DOMContentLoaded', () => {
         initApp();
     }
 });
+
 // Optional: Change sun color based on time of day
 document.addEventListener("DOMContentLoaded", () => {
   const sun = document.querySelector(".rotating-sun circle");
@@ -1337,3 +1374,65 @@ document.addEventListener("DOMContentLoaded", () => {
     sun.setAttribute("fill", "#FFD700"); // Midday
   }
 });
+=======
+
+// --- Weather Tips ---
+const tips = [
+    "Carry an umbrella on cloudy days.",
+    "Apply sunscreen if UV is high.",
+    "Stay hydrated during hot weather.",
+    "Wear layers on windy days.",
+    "Check air quality before outdoor runs."
+];
+
+const tipsList = document.getElementById("weatherTips");
+tips.forEach(tip => {
+    const li = document.createElement("li");
+    li.textContent = tip;
+    tipsList.appendChild(li);
+});
+
+// --- Favorite Locations ---
+const favoritesContainer = document.getElementById("favoritesContainer");
+const addFavoriteBtn = document.getElementById("addFavoriteBtn");
+
+addFavoriteBtn.addEventListener("click", () => {
+    const location = document.getElementById("locationName").textContent;
+    if (location && location !== "Loading...") {
+        const favItem = document.createElement("div");
+        favItem.className = "fav-item";
+        favItem.textContent = location;
+        favItem.addEventListener("click", () => {
+            document.getElementById("locationSearch").value = location;
+            document.getElementById("searchBtn").click();
+        });
+        favoritesContainer.appendChild(favItem);
+    }
+});
+
+// --- Unit Toggle ---
+const unitToggle = document.getElementById("unitToggle");
+const unitLabel = document.getElementById("unitLabel");
+
+let usingCelsius = true;
+
+unitToggle.addEventListener("change", () => {
+    usingCelsius = !usingCelsius;
+    unitLabel.textContent = usingCelsius ? "°C" : "°F";
+    // Optional: Convert displayed temps
+    convertTemperatures(usingCelsius);
+});
+
+function convertTemperatures(toCelsius) {
+    const tempElements = document.querySelectorAll(".temp-main span, .feels-like span, .high-low span, .day-high, .day-low");
+    tempElements.forEach(el => {
+        let temp = parseFloat(el.textContent);
+        if (!isNaN(temp)) {
+            temp = toCelsius
+                ? ((temp - 32) * 5) / 9
+                : (temp * 9) / 5 + 32;
+            el.textContent = Math.round(temp);
+        }
+    });
+}
+
