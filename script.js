@@ -1323,3 +1323,17 @@ document.addEventListener('DOMContentLoaded', () => {
         initApp();
     }
 });
+// Optional: Change sun color based on time of day
+document.addEventListener("DOMContentLoaded", () => {
+  const sun = document.querySelector(".rotating-sun circle");
+  if (!sun) return;
+
+  const hour = new Date().getHours();
+  if (hour >= 18 || hour <= 5) {
+    sun.setAttribute("fill", "#FFA500"); // Sunset/sunrise
+  } else if (hour >= 6 && hour <= 10) {
+    sun.setAttribute("fill", "#FFEB3B"); // Morning
+  } else {
+    sun.setAttribute("fill", "#FFD700"); // Midday
+  }
+});
